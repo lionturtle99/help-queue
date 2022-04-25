@@ -1,13 +1,14 @@
 import React from "react";
 import Header from "./Header";
 import TicketControl from "./TicketControl";
+import Container from 'react-bootstrap/Container';
 
 function App(){
   return ( 
-    <React.Fragment>
+    <Container className="px-5">
       <Header />
       <TicketControl />
-    </React.Fragment>
+    </Container>
   );
 }
 
