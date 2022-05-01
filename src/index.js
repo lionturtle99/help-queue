@@ -6,16 +6,14 @@ import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { createStore } from 'redux';
-import reducer from './reducers/ticket-list-reducer';
 import { Provider } from 'react-redux';
+import rootReducer from './reducers/index';
 
+const store = createStore(rootReducer);
 
-
-const store = createStore(reducer);
-
-// store.subscribe(() =>
-//   console.log(store.getState())
-// );
+store.subscribe(() =>
+  console.log(store.getState() + " Current state")
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
