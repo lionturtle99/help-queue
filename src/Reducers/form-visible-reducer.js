@@ -1,10 +1,12 @@
-import * as c from "./../actions/ActionTypes";
+import * as c from './../actions/ActionTypes';
 
-export default (state = false, action) => {
+  const formVisibleReducer = (state = false, action) => {
   switch (action.type) {
-  case c.TOGGLE_FORM:
-    return !state;
-  default:
-    return state;
+    case c.TOGGLE_FORM:
+      return !state;
+    default:
+      return state;
   }
 };
+
+export default formVisibleReducer;

@@ -1,6 +1,6 @@
-import * as c from "./../actions/ActionTypes";
+import * as c from "../actions/ActionTypes";
 
-const Reducer = (state = {}, action) => {
+const ticketListReducer = (state = {}, action) => {
   const { names, location, issue, id } = action;
   switch (action.type) {
   case c.ADD_TICKET:
@@ -21,4 +21,4 @@ const Reducer = (state = {}, action) => {
   }
 };
 
-export default Reducer;
+export default ticketListReducer;
