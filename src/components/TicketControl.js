@@ -6,6 +6,7 @@ import TicketDetail from './TicketDetail';
 import EditTicketForm from './EditTicketForm';
 import * as a from '../actions';
 import { connect } from 'react-redux';
+import { withFirestore } from 'react-redux-firebase';
 
 
 class TicketControl extends React.Component {
@@ -13,7 +14,6 @@ class TicketControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // formVisibleOnPage: false,
       selectedTicket: null,
       editing: false
     };
@@ -32,34 +32,34 @@ class TicketControl extends React.Component {
     }
   }
 
-  handleAddingNewTicketToList = (newTicket) => {
+  handleAddingNewTicketToList = () => {
     const { dispatch } = this.props;
-    const action = a.addTicket(newTicket);
+    const action = a.toggleForm();
     dispatch(action);
-    const action2 = a.toggleForm();
-    dispatch(action2);
   }
 
   handleChangingSelectedTicket = (id) => {
-    const selectedTicket = this.props.mainTicketList[id];
-    this.setState({selectedTicket: selectedTicket});
+    this.props.firestore.get({collection: 'tickets', doc: id}).then((ticket) => {
+      const firestoreTicket = {
+        names: ticket.get("names"),
+        location: ticket.get("location"),
+        issue: ticket.get("issue"),
+        id: ticket.id
+      }
+      this.setState({selectedTicket: firestoreTicket });
+    });
   }
 
   handleDeletingTicket = (id) => {
-    const { dispatch } = this.props;
-    const action = a.deleteTicket(id);
-    dispatch(action);
+    this.props.firestore.delete({collection: 'tickets', doc: id});
     this.setState({selectedTicket: null});
-  } 
+  }
 
   handleEditClick = () => {
     this.setState({editing: true});
   }
 
-  handleEditingTicketInList = (ticketToEdit) => {
-    const { dispatch } = this.props;
-    const action = a.addTicket(ticketToEdit);
-    dispatch(action);
+  handleEditingTicketInList = () => {
     this.setState({
       editing: false,
       selectedTicket: null
@@ -101,8 +101,7 @@ class TicketControl extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    mainTicketList: state.mainTicketList,
+  return { 
     formVisibleOnPage: state.formVisibleOnPage
   }
 }
@@ -114,4 +113,4 @@ TicketControl.propTypes = {
 
 TicketControl = connect(mapStateToProps)(TicketControl);
 
-export default TicketControl;
+export default withFirestore(TicketControl);

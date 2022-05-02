@@ -15,15 +15,26 @@ import 'firebase/compat/auth';
 
 const store = createStore(rootReducer);
 
-store.subscribe(() =>
-  console.log(store.getState() + " Current state!")
-);
+const rrfProps = {
+  firebase,
+  config: {
+    userProfile: "users",
+    useFirestoreForProfile: true
+  },
+  dispatch: store.dispatch,
+  createFirestoreInstance
+}
 
+// store.subscribe(() =>
+//   console.log(store.getState() + " Current state!")
+// );
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <App />
+      </ReactReduxFirebaseProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
